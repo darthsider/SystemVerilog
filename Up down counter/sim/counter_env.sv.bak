@@ -1,0 +1,39 @@
+class counter_env;
+  
+  counter_gen gen;
+  counter_bfm bfm;
+  virtual counter_intf intf;
+  mailbox gen2bfm;
+  event ended;
+  
+  function new(virtual counter_intf intf);
+    this.intf = intf;
+    gen2bfm = new();
+    gen = new(gen2bfm,ended);
+    bfm = new(intf,gen2bfm);
+  endfunction
+  
+  task pre_test;
+    bfm.reset();
+  endtask
+  
+  task test;
+    fork
+    gen.main();
+    bfm.main();
+    join_any
+  endtask
+  
+  task post_test;
+    wait(ended.triggered);
+    wait(gen.repeat_count == bfm.no_transaction);
+  endtask
+  
+  task run;
+    pre_test();
+    test();
+    post_test();
+    $finish;
+  endtask
+  
+endclass

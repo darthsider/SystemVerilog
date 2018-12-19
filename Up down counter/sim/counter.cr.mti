@@ -1,0 +1,8 @@
+{D:/HDLfiles/HDLfiles/2018/December/My own Counter SV testbench/counter.v} {1 {vlog -work work -vopt -nocovercells {D:\HDLfiles\HDLfiles\2018\December\My own Counter SV testbench\counter.v}
+QuestaSim vlog 10.0b Compiler 2011.05 May  5 2011
+-- Compiling module counter
+
+Top level modules:
+	counter
+
+} {} {}}

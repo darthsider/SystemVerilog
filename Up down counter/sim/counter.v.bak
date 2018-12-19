@@ -1,0 +1,9 @@
+module counter(clk,reset,up_down,data_in,load,data_out);
+  
+  input clk;
+  input reset;
+  input up_down;
+  input load;
+  input [3:0] data_in;
+  output reg [3:0] data_out;
+
