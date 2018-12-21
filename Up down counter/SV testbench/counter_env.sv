@@ -1,7 +1,10 @@
+`include "counter_cov.sv"
+
 class counter_env;
   
   counter_gen gen;
   counter_bfm bfm;
+  counter_cov cov;
   
   mailbox gen2bfm;
   
@@ -14,6 +17,7 @@ class counter_env;
     gen2bfm = new();
     gen = new(gen2bfm,ended);
     bfm = new(intf,gen2bfm);
+    cov = new();
   endfunction
   
   task pre_test;
@@ -24,6 +28,7 @@ class counter_env;
     fork
     gen.main();
     bfm.main();
+    cov.main();
     join_any
   endtask
   
