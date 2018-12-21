@@ -1,10 +1,7 @@
-`define BFM_IF intf.BFM.bfm_cb
-
 class counter_bfm;
   
-  counter_trans trans;
-  mailbox gen2bfm;
   virtual counter_intf intf;
+  mailbox gen2bfm;
   int no_transactions;
   
   function new(virtual counter_intf intf,mailbox gen2bfm);
@@ -12,35 +9,32 @@ class counter_bfm;
     this.gen2bfm = gen2bfm;
   endfunction
   
-  
   task reset;
-    wait(intf.reset);
+    wait(intf.rst);
     $display("Reset Initiated");
-    `BFM_IF.load <= 0;
-    `BFM_IF.up_down <= 0;
-    `BFM_IF.data_in <= 0;
-    `BFM_IF.data_out <= 0;
-    wait(!intf.reset);
+    intf.bfm_cb.load <= 0;
+    intf.bfm_cb.updown <= 0;
+    intf.bfm_cb.data <= 0;
+    intf.bfm_cb.data_out <= 0;
+    wait(!intf.rst);
     $display("Reset finished");
   endtask
   
-    
+  
   task main;
     forever begin
-      counter_trans trans;
-      gen2bfm.get(trans);
-      $display("\t Transaction No. = %0d",no_transactions);
-      @(posedge intf.clk);
-      `BFM_IF.load <= trans.load;
-      `BFM_IF.up_down <= trans.up_down;
-      `BFM_IF.data_in <= trans.data_in;
-      trans.data_out = `BFM_IF.data_out;
-    $display("----------------------------------------------");
-    $display("\t load = %0b, \t data_in = %0b, \t up_down = %0b, \t data_out = %0b",trans.load,trans.data_in,trans.up_down,`BFM_IF.data_out);
-    $display("----------------------------------------------");
-    @(posedge intf.clk);
-      no_transactions++;
-    end
-  endtask
-  
-endclass
+    counter_trans trans;
+    gen2bfm.get(trans);
+    $display("Transaction No. = %0d", no_transactions);
+    intf.bfm_cb.load <= trans.load;
+    intf.bfm_cb.updown <= trans.updown;
+    intf.bfm_cb.data <= trans.data;
+    repeat(2)@(posedge intf.clk);
+    trans.data_out = intf.bfm_cb.data_out;
+    trans.display();
+    no_transactions++;
+  end
+endtask
+
+
+endclass   

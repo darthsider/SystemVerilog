@@ -4,7 +4,7 @@ program counter_test(counter_intf intf);
   
   initial begin
     env = new(intf);
-    env.gen.repeat_count = 10;
+    env.gen.repeat_count = 200;
     env.run();
   end
   

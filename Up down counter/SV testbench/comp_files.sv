@@ -5,4 +5,4 @@
 `include "counter_bfm.sv"
 `include "counter_env.sv"
 `include "counter_test.sv"
-`include "counter_tb_top.sv"
+`include "tb_counter_top.sv"

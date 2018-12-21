@@ -2,8 +2,11 @@ class counter_env;
   
   counter_gen gen;
   counter_bfm bfm;
-  virtual counter_intf intf;
+  
   mailbox gen2bfm;
+  
+  virtual counter_intf intf;
+  
   event ended;
   
   function new(virtual counter_intf intf);

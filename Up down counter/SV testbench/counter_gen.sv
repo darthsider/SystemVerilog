@@ -2,8 +2,8 @@ class counter_gen;
   
   counter_trans trans;
   mailbox gen2bfm;
-  int repeat_count;
   event ended;
+  int repeat_count;
   
   function new(mailbox gen2bfm,event ended);
     this.gen2bfm = gen2bfm;
@@ -13,7 +13,7 @@ class counter_gen;
   task main;
     repeat(repeat_count) begin
       trans = new();
-      if(!trans.randomize()) $fatal("Randomization failed");
+      if(!trans.randomize()) $fatal("Randomization Failed");
         gen2bfm.put(trans);
       end
       ->ended;
